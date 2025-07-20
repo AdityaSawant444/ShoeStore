@@ -1,0 +1,220 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}All Products - ShoeStore{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row">
+        <!-- Category Images Gallery (when filtering by category) -->
+        {% if category_images %}
+        <div class="row mb-5">
+            <div class="col-12">
+                <h3 class="mb-4">
+                    <i class="fas fa-images me-2"></i>All {{ current_category|title }} Images
+                </h3>
+                <div class="category-images-gallery">
+                    <div class="row g-3">
+                        {% for image_path in category_images %}
+                        <div class="col-xl-2 col-lg-3 col-md-4 col-sm-6 col-6">
+                            <img src="{% static image_path %}" class="img-fluid rounded" alt="{{ current_category|title }} image" style="height: 150px; object-fit: cover; width: 100%;">
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Filters -->
+        <div class="col-lg-3 col-md-12 mb-4">
+            <div class="filter-section">
+                <h5>
+                    <i class="fas fa-filter me-2"></i>Categories
+                </h5>
+                <div class="list-group list-group-flush">
+                    <a href="{% url 'store:product_list' %}" class="list-group-item list-group-item-action {% if not current_category %}active{% endif %}">
+                        <i class="fas fa-th-large me-2"></i>All Categories
+                    </a>
+                    {% for category in categories %}
+                    <a href="{% url 'store:product_list' %}?category={{ category.slug }}" 
+                       class="list-group-item list-group-item-action {% if current_category == category.slug %}active{% endif %}">
+                        <i class="fas fa-tag me-2"></i>{{ category.name }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h5>
+                    <i class="fas fa-venus-mars me-2"></i>Gender
+                </h5>
+                <div class="gender-filter">
+                    <a href="{% url 'store:product_list' %}" 
+                       class="btn btn-outline-primary {% if not current_gender %}active{% endif %}">
+                        <i class="fas fa-users me-2"></i>All
+                    </a>
+                    <a href="{% url 'store:product_list' %}?gender=M" 
+                       class="btn btn-outline-primary {% if current_gender == 'M' %}active{% endif %}">
+                        <i class="fas fa-male me-2"></i>Men
+                    </a>
+                    <a href="{% url 'store:product_list' %}?gender=W" 
+                       class="btn btn-outline-primary {% if current_gender == 'W' %}active{% endif %}">
+                        <i class="fas fa-female me-2"></i>Women
+                    </a>
+                </div>
+            </div>
+
+            <div class="filter-section">
+                <h5>
+                    <i class="fas fa-rupee-sign me-2"></i>Price Range
+                </h5>
+                <form method="get" class="mb-3">
+                    {% if current_category %}
+                        <input type="hidden" name="category" value="{{ current_category }}">
+                    {% endif %}
+                    {% if current_gender %}
+                        <input type="hidden" name="gender" value="{{ current_gender }}">
+                    {% endif %}
+                    <div class="mb-2">
+                        <label for="min_price" class="form-label">Min Price (₹)</label>
+                        <input type="number" class="form-control" id="min_price" name="min_price" min="0" step="1" value="{{ request.GET.min_price|default:1000 }}">
+                    </div>
+                    <div class="mb-2">
+                        <label for="max_price" class="form-label">Max Price (₹)</label>
+                        <input type="number" class="form-control" id="max_price" name="max_price" min="0" step="1" value="{{ request.GET.max_price|default:4000 }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-check me-2"></i>Apply
+                    </button>
+                </form>
+            </div>
+
+            <div class="filter-section">
+                <h5>
+                    <i class="fas fa-search me-2"></i>Search
+                </h5>
+                <div class="search-bar">
+                    <i class="fas fa-search search-icon"></i>
+                    <input type="text" class="form-control search-input" placeholder="Search products...">
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="col-lg-9 col-md-12">
+            <div class="d-flex flex-column flex-sm-row justify-content-between align-items-center mb-4">
+                <h2>
+                    <i class="fas fa-shoe-prints me-2"></i>All Products
+                </h2>
+                <div class="view-toggle mt-3 mt-sm-0">
+                    <button class="btn btn-outline-primary" id="grid-view" aria-label="Grid view">
+                        <i class="fas fa-th"></i>
+                    </button>
+                    <button class="btn btn-outline-primary" id="list-view" aria-label="List view">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+
+            {% if products %}
+            <div class="row g-4" id="products-grid">
+                {% for product in products %}
+                <div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
+                    <div class="product-card card h-100" data-category="{{ product.category.slug }}" data-gender="{{ product.gender }}">
+                        {% if product.is_on_sale %}
+                        <div class="sale-badge">SALE</div>
+                        {% endif %}
+                        {% if product.featured %}
+                        <div class="featured-badge">FEATURED</div>
+                        {% endif %}
+                        
+                        <a href="{{ product.get_absolute_url }}">
+                            <img src="{{ product.static_image_url }}" class="card-img-top" alt="{{ product.name }}">
+                        </a>
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description|truncatewords:10 }}</p>
+                            
+                            <!-- Category Images Carousel -->
+                            <div class="category-images-carousel mb-3">
+                                <div class="row g-1">
+                                    {% for image_url in product.category_images|slice:":4" %}
+                                    <div class="col-3">
+                                        <img src="{{ image_url }}" class="img-fluid rounded" alt="{{ product.name }} - {{ forloop.counter }}" style="height: 60px; object-fit: cover;">
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                            
+                            <div class="product-price mt-auto">
+                                {% if product.is_on_sale %}
+                                <span class="original-price">₹{{ product.price }}</span>
+                                <span class="sale-price">₹{{ product.sale_price }}</span>
+                                {% else %}
+                                ₹{{ product.price }}
+                                {% endif %}
+                            </div>
+                            <div class="d-flex flex-column flex-sm-row gap-2 mt-3">
+                                <a href="{{ product.get_absolute_url }}" class="btn btn-primary flex-fill">
+                                    <i class="fas fa-eye me-2"></i>View Details
+                                </a>
+                                <button class="btn btn-outline-primary wishlist-btn" data-bs-toggle="tooltip" title="Add to Wishlist">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if products.has_other_pages %}
+            <nav aria-label="Product pagination" class="mt-5">
+                <ul class="pagination justify-content-center flex-wrap">
+                    {% if products.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ products.previous_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_gender %}&gender={{ current_gender }}{% endif %}" aria-label="Previous">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for num in products.paginator.page_range %}
+                        {% if products.number == num %}
+                        <li class="page-item active">
+                            <span class="page-link">{{ num }}</span>
+                        </li>
+                        {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                        <li class="page-item">
+                            <a class="page-link" href="?page={{ num }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_gender %}&gender={{ current_gender }}{% endif %}">{{ num }}</a>
+                        </li>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if products.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ products.next_page_number }}{% if current_category %}&category={{ current_category }}{% endif %}{% if current_gender %}&gender={{ current_gender }}{% endif %}" aria-label="Next">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+            {% endif %}
+
+            {% else %}
+            <div class="text-center py-5">
+                <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                <h3>No products found</h3>
+                <p class="text-muted">Try adjusting your filters or search terms.</p>
+                <a href="{% url 'store:product_list' %}" class="btn btn-primary">
+                    <i class="fas fa-times me-2"></i>Clear Filters
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

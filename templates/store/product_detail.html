@@ -1,0 +1,367 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}{{ product.name }} - ShoeStore{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'store:home' %}">
+                <i class="fas fa-home me-1"></i>Home
+            </a></li>
+            <li class="breadcrumb-item"><a href="{% url 'store:product_list' %}">
+                <i class="fas fa-th-large me-1"></i>Products
+            </a></li>
+            <li class="breadcrumb-item"><a href="{% url 'store:category_detail' product.category.slug %}">
+                <i class="fas fa-tag me-1"></i>{{ product.category.name }}
+            </a></li>
+            <li class="breadcrumb-item active" aria-current="page">{{ product.name }}</li>
+        </ol>
+    </nav>
+
+    <div class="row">
+        <!-- Product Images -->
+        <div class="col-lg-6 col-md-12 mb-4">
+            <div class="product-detail">
+                <div class="position-relative">
+                    <img src="{{ product.static_image_url }}" class="img-fluid rounded main-product-image" alt="{{ product.name }}" id="mainProductImage">
+                    {% if product.is_on_sale %}
+                    <div class="sale-badge">SALE</div>
+                    {% endif %}
+                    {% if product.featured %}
+                    <div class="featured-badge">FEATURED</div>
+                    {% endif %}
+                </div>
+                <!-- Category Images Gallery (for this product only) -->
+                <div class="row mt-3 g-2">
+                    {% for image_url in product.category_images %}
+                    <div class="col-3 col-sm-2 col-4">
+                        <img src="{{ image_url }}" class="img-fluid rounded product-image{% if forloop.first %} active{% endif %}" alt="{{ product.name }} - Image {{ forloop.counter }}" onclick="changeMainImage(this)">
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Product Information -->
+        <div class="col-lg-6 col-md-12">
+            <div class="product-detail">
+                <h1 class="mb-3">{{ product.name }}</h1>
+                <div class="mb-3">
+                    <span class="badge bg-primary me-2">
+                        <i class="fas fa-venus-mars me-1"></i>{{ product.get_gender_display }}
+                    </span>
+                    <span class="badge bg-secondary">
+                        <i class="fas fa-tag me-1"></i>{{ product.category.name }}
+                    </span>
+                </div>
+                
+                <!-- Price Display -->
+                <div class="price mb-4" id="productPrice">
+                    <span class="h3 text-success">₹<span id="priceValue">{% if sizes %}{{ sizes.0.price }}{% else %}{{ product.price }}{% endif %}</span></span>
+                    {% if product.is_on_sale %}
+                    <span class="original-price ms-2">₹{{ product.price }}</span>
+                    {% endif %}
+                </div>
+                
+                <!-- Size Selection -->
+                <div class="mb-4">
+                    <h6>
+                        <i class="fas fa-ruler me-2"></i>Select Size
+                    </h6>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for size in sizes %}
+                            <button type="button" class="btn btn-outline-primary size-btn{% if forloop.first %} active{% endif %}" data-size="{{ size.size }}" data-price="{{ size.price }}">{{ size.size }}</button>
+                        {% endfor %}
+                    </div>
+                </div>
+                <input type="hidden" name="size" id="selectedSizeInput" value="{% if sizes %}{{ sizes.0.size }}{% endif %}">
+                
+                <!-- Quantity Selection -->
+                <div class="mb-4">
+                    <h6>
+                        <i class="fas fa-sort-numeric-up me-2"></i>Quantity
+                    </h6>
+                    <div class="input-group" style="max-width: 200px;">
+                        <button class="btn btn-outline-secondary quantity-minus" type="button">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="number" class="form-control text-center quantity-input" value="1" min="1" max="10">
+                        <button class="btn btn-outline-secondary quantity-plus" type="button">
+                            <i class="fas fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Action Buttons -->
+                <form method="post" action="{% url 'store:add_to_cart' product.id %}" id="addToCartForm">
+                    {% csrf_token %}
+                    <input type="hidden" name="size" id="selectedSizeInput" value="{% if sizes %}{{ sizes.0.size }}{% endif %}">
+                    <input type="hidden" name="quantity" id="selectedQuantityInput" value="1">
+                    <div class="d-grid gap-2 mb-4">
+                        <button type="submit" class="btn btn-primary btn-lg add-to-cart">
+                            <i class="fas fa-shopping-cart me-2"></i>Add to Cart
+                        </button>
+                        <button type="button" class="btn btn-outline-primary wishlist-btn">
+                            <i class="far fa-heart me-2"></i>Add to Wishlist
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Product Features -->
+                <div class="row g-3 mb-4">
+                    <div class="col-6 col-sm-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-shipping-fast text-primary me-2"></i>
+                            <small>Free Shipping</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-undo text-primary me-2"></i>
+                            <small>30-Day Returns</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-shield-alt text-primary me-2"></i>
+                            <small>Secure Payment</small>
+                        </div>
+                    </div>
+                    <div class="col-6 col-sm-3">
+                        <div class="d-flex align-items-center">
+                            <i class="fas fa-headset text-primary me-2"></i>
+                            <small>24/7 Support</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Share Buttons -->
+                <div class="mb-4">
+                    <h6>
+                        <i class="fas fa-share-alt me-2"></i>Share this product
+                    </h6>
+                    <div class="d-flex gap-2">
+                        <a href="#" class="btn btn-outline-primary btn-sm" aria-label="Share on Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary btn-sm" aria-label="Share on Twitter">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary btn-sm" aria-label="Share on Pinterest">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                        <a href="#" class="btn btn-outline-primary btn-sm" aria-label="Share via Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Description -->
+                <div class="mb-4">
+                    <h6>
+                        <i class="fas fa-info-circle me-2"></i>Description
+                    </h6>
+                    <p>{{ product.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Product Details Tabs -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="product-detail">
+                <ul class="nav nav-tabs" id="productTabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="details-tab" data-bs-toggle="tab" data-bs-target="#details" type="button" role="tab">
+                            <i class="fas fa-info-circle me-2"></i>Product Details
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="specs-tab" data-bs-toggle="tab" data-bs-target="#specs" type="button" role="tab">
+                            <i class="fas fa-cogs me-2"></i>Specifications
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews" type="button" role="tab">
+                            <i class="fas fa-star me-2"></i>Reviews
+                        </button>
+                    </li>
+                </ul>
+                
+                <div class="tab-content" id="productTabsContent">
+                    <div class="tab-pane fade show active" id="details" role="tabpanel">
+                        <div class="p-4">
+                            <h5>
+                                <i class="fas fa-info-circle me-2"></i>Product Details
+                            </h5>
+                            <p>{{ product.description }}</p>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Premium quality materials</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Comfortable fit</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Durable construction</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Stylish design</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="specs" role="tabpanel">
+                        <div class="p-4">
+                            <h5>
+                                <i class="fas fa-cogs me-2"></i>Specifications
+                            </h5>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tbody>
+                                        <tr>
+                                            <td><strong><i class="fas fa-tag me-2"></i>Material</strong></td>
+                                            <td>Premium leather</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong><i class="fas fa-shoe-prints me-2"></i>Sole</strong></td>
+                                            <td>Rubber</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong><i class="fas fa-link me-2"></i>Closure</strong></td>
+                                            <td>Lace-up</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong><i class="fas fa-tag me-2"></i>Style</strong></td>
+                                            <td>{{ product.category.name }}</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong><i class="fas fa-venus-mars me-2"></i>Gender</strong></td>
+                                            <td>{{ product.get_gender_display }}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="reviews" role="tabpanel">
+                        <div class="p-4">
+                            <h5>
+                                <i class="fas fa-star me-2"></i>Customer Reviews
+                            </h5>
+                            <div class="text-center py-4">
+                                <i class="fas fa-star fa-2x text-warning"></i>
+                                <h6 class="mt-2">No reviews yet</h6>
+                                <p class="text-muted">Be the first to review this product!</p>
+                                <button class="btn btn-primary">
+                                    <i class="fas fa-pen me-2"></i>Write a Review
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Related Products -->
+    {% if related_products %}
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="mb-4">
+                <i class="fas fa-th-large me-2"></i>Related Products
+            </h3>
+            <div class="row g-4">
+                {% for product in related_products %}
+                <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12">
+                    <div class="product-card card h-100">
+                        {% if product.is_on_sale %}
+                        <div class="sale-badge">SALE</div>
+                        {% endif %}
+                        
+                        <img src="{{ product.static_image_url }}" class="card-img-top" alt="{{ product.name }}">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description|truncatewords:8 }}</p>
+                            <div class="product-price mt-auto">
+                                {% if product.is_on_sale %}
+                                <span class="original-price">₹{{ product.price }}</span>
+                                <span class="sale-price">₹{{ product.sale_price }}</span>
+                                {% else %}
+                                ₹{{ product.price }}
+                                {% endif %}
+                            </div>
+                            <div class="d-flex flex-column flex-sm-row gap-2 mt-3">
+                                <a href="{{ product.get_absolute_url }}" class="btn btn-primary flex-fill">
+                                    <i class="fas fa-eye me-2"></i>View Details
+                                </a>
+                                <button class="btn btn-outline-primary wishlist-btn" data-bs-toggle="tooltip" title="Add to Wishlist">
+                                    <i class="far fa-heart"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% endif %}
+</div>
+
+<script>
+// Global function for changing main image
+function changeMainImage(imgElement) {
+    const mainImage = document.querySelector('.main-product-image');
+    if (mainImage) {
+        mainImage.src = imgElement.src;
+        document.querySelectorAll('.product-image').forEach(img => img.classList.remove('active'));
+        imgElement.classList.add('active');
+    }
+}
+
+// Size selection functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const sizeButtons = document.querySelectorAll('.size-btn');
+    const priceValue = document.getElementById('priceValue');
+    const selectedSizeInput = document.getElementById('selectedSizeInput');
+
+    sizeButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // Remove active class from all buttons
+            sizeButtons.forEach(btn => btn.classList.remove('active'));
+            // Add active class to clicked button
+            this.classList.add('active');
+            // Update price
+            const price = this.dataset.price;
+            const size = this.dataset.size;
+            if (priceValue) priceValue.textContent = price;
+            if (selectedSizeInput) selectedSizeInput.value = size;
+        });
+    });
+
+    // Quantity controls
+    const quantityInput = document.querySelector('.quantity-input');
+    const selectedQuantityInput = document.getElementById('selectedQuantityInput');
+    const minusBtn = document.querySelector('.quantity-minus');
+    const plusBtn = document.querySelector('.quantity-plus');
+
+    if (minusBtn && plusBtn && quantityInput) {
+        minusBtn.addEventListener('click', function() {
+            const currentValue = parseInt(quantityInput.value);
+            if (currentValue > 1) {
+                quantityInput.value = currentValue - 1;
+                if (selectedQuantityInput) selectedQuantityInput.value = quantityInput.value;
+            }
+        });
+
+        plusBtn.addEventListener('click', function() {
+            const currentValue = parseInt(quantityInput.value);
+            if (currentValue < 10) {
+                quantityInput.value = currentValue + 1;
+                if (selectedQuantityInput) selectedQuantityInput.value = quantityInput.value;
+            }
+        });
+
+        quantityInput.addEventListener('change', function() {
+            if (selectedQuantityInput) selectedQuantityInput.value = this.value;
+        });
+    }
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,44 @@
+{% extends 'store/base.html' %}
+{% block title %}Test Cart - ShoeStore{% endblock %}
+{% block content %}
+<div class="container py-5">
+    <h1>Test Cart Functionality</h1>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <h3>Direct Form Test (No JavaScript)</h3>
+            <form method="post" action="{% url 'store:add_to_cart' 31 %}">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label for="size" class="form-label">Size:</label>
+                    <input type="text" name="size" id="size" value="8" class="form-control">
+                </div>
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity:</label>
+                    <input type="number" name="quantity" id="quantity" value="1" min="1" class="form-control">
+                </div>
+                <button type="submit" class="btn btn-primary">Add to Cart (Direct)</button>
+            </form>
+        </div>
+        
+        <div class="col-md-6">
+            <h3>Current Cart Status</h3>
+            <p>Cart Count: {{ cart_count }}</p>
+            <a href="{% url 'store:cart' %}" class="btn btn-secondary">View Cart</a>
+        </div>
+    </div>
+    
+    <hr>
+    
+    <div class="row mt-4">
+        <div class="col-12">
+            <h3>Available Products for Testing</h3>
+            <ul>
+                <li><a href="{% url 'store:product_detail' 'mens-running-shoes' %}">Men's Running Shoes</a></li>
+                <li><a href="{% url 'store:product_detail' 'mens-casual-sneakers' %}">Men's Casual Sneakers</a></li>
+                <li><a href="{% url 'store:product_detail' 'mens-dress-shoes' %}">Men's Dress Shoes</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %} 

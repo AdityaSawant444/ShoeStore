@@ -1,0 +1,234 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Shipping Information - ShoeStore{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Page Header -->
+            <div class="text-center mb-5">
+                <h1 class="fw-bold mb-3"><i class="fas fa-shipping-fast me-3"></i>Shipping Information</h1>
+                <p class="text-muted">Fast, reliable shipping to your doorstep</p>
+            </div>
+
+            <!-- Shipping Options -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-truck me-2"></i>Shipping Options</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-4">
+                            <div class="border rounded p-3 h-100">
+                                <h6 class="fw-bold text-primary">
+                                    <i class="fas fa-rocket me-2"></i>Express Delivery
+                                </h6>
+                                <p class="text-muted mb-2">1-2 Business Days</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Free on orders over ₹8,000</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>₹1,200 for orders under ₹8,000</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Priority handling</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Real-time tracking</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="border rounded p-3 h-100">
+                                <h6 class="fw-bold text-success">
+                                    <i class="fas fa-shipping-fast me-2"></i>Standard Delivery
+                                </h6>
+                                <p class="text-muted mb-2">3-5 Business Days</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Free on orders over ₹4,000</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>₹600 for orders under ₹4,000</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Reliable service</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Tracking included</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="border rounded p-3 h-100">
+                                <h6 class="fw-bold text-info">
+                                    <i class="fas fa-calendar-alt me-2"></i>Economy Delivery
+                                </h6>
+                                <p class="text-muted mb-2">5-7 Business Days</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Free on all orders</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Budget-friendly</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Standard tracking</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>No minimum order</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="border rounded p-3 h-100">
+                                <h6 class="fw-bold text-warning">
+                                    <i class="fas fa-store me-2"></i>Store Pickup
+                                </h6>
+                                <p class="text-muted mb-2">Same Day Available</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>Free pickup</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>No shipping fees</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Instant availability</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Try before you buy</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Delivery Areas -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Delivery Areas</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-success">Free Shipping Zones</h6>
+                            <ul>
+                                <li>Mumbai Metropolitan Region</li>
+                                <li>Pune Metropolitan Region</li>
+                                <li>Nagpur City</li>
+                                <li>Nashik City</li>
+                                <li>Aurangabad City</li>
+                                <li>Thane City</li>
+                                <li>Solapur City</li>
+                                <li>Kolhapur City</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-warning">Additional Charges</h6>
+                            <ul>
+                                <li>Rural Maharashtra: ₹200 extra</li>
+                                <li>Remote areas: ₹300 extra</li>
+                                <li>Oversized items: ₹150 extra</li>
+                                <li>Rush delivery: ₹500 extra</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tracking & Updates -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-search me-2"></i>Tracking & Updates</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold">Order Tracking</h6>
+                            <ul>
+                                <li>Real-time tracking updates</li>
+                                <li>Email notifications</li>
+                                <li>SMS alerts (optional)</li>
+                                <li>Delivery confirmation</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold">Delivery Updates</h6>
+                            <ul>
+                                <li>Estimated delivery dates</li>
+                                <li>Delivery window notifications</li>
+                                <li>Signature requirements</li>
+                                <li>Package protection</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Shipping Policies -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-file-alt me-2"></i>Shipping Policies</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-primary">Processing Time</h6>
+                            <ul>
+                                <li>Orders processed within 24 hours</li>
+                                <li>Weekend orders ship Monday</li>
+                                <li>Holiday delays may apply</li>
+                                <li>Backordered items notified</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-primary">Delivery Time</h6>
+                            <ul>
+                                <li>Business days only</li>
+                                <li>No delivery on holidays</li>
+                                <li>Weather delays possible</li>
+                                <li>Contact for urgent orders</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- International Shipping -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-globe me-2"></i>International Shipping</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold">Available States</h6>
+                            <ul>
+                                <li>Maharashtra (Free shipping)</li>
+                                <li>Delhi NCR</li>
+                                <li>Karnataka</li>
+                                <li>Tamil Nadu</li>
+                                <li>Telangana</li>
+                                <li>Gujarat</li>
+                                <li>Rajasthan</li>
+                                <li>Uttar Pradesh</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold">Important Notes</h6>
+                            <ul>
+                                <li>GST included in all prices</li>
+                                <li>Delivery times vary by location</li>
+                                <li>Tracking available for all orders</li>
+                                <li>Contact us for specific rates</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact & Support -->
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="mb-3">Need Help with Shipping?</h5>
+                    <p class="text-muted mb-3">Our customer service team is here to help with any shipping questions.</p>
+                    <div class="row">
+                        <div class="col-md-4 mb-2">
+                            <a href="{% url 'store:contact_support' %}" class="btn btn-outline-primary w-100">
+                                <i class="fas fa-headset me-2"></i>Contact Support
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <a href="{% url 'store:track_order' %}" class="btn btn-outline-success w-100">
+                                <i class="fas fa-truck me-2"></i>Track Order
+                            </a>
+                        </div>
+                        <div class="col-md-4 mb-2">
+                            <a href="{% url 'store:product_list' %}" class="btn btn-outline-info w-100">
+                                <i class="fas fa-shopping-bag me-2"></i>Shop Now
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

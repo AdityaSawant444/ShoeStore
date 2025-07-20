@@ -1,0 +1,205 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Size Guide - ShoeStore{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Page Header -->
+            <div class="text-center mb-5">
+                <h1 class="fw-bold mb-3"><i class="fas fa-ruler me-3"></i>Size Guide</h1>
+                <p class="text-muted">Find your perfect fit with our comprehensive size guide</p>
+            </div>
+
+            <!-- How to Measure -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-info-circle me-2"></i>How to Measure Your Feet</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold">Step 1: Prepare</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Wear socks you'll use with the shoes</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Measure in the afternoon (feet swell)</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Stand on a flat surface</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold">Step 2: Measure</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Place foot on paper</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Mark longest point (heel to toe)</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Measure width at widest point</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Men's Size Chart -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-male me-2"></i>Men's Size Chart</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>US Size</th>
+                                    <th>UK Size</th>
+                                    <th>EU Size</th>
+                                    <th>Foot Length (inches)</th>
+                                    <th>Foot Length (cm)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>7</td><td>6</td><td>40</td><td>9.5</td><td>24.1</td></tr>
+                                <tr><td>7.5</td><td>6.5</td><td>40.5</td><td>9.7</td><td>24.6</td></tr>
+                                <tr><td>8</td><td>7</td><td>41</td><td>9.9</td><td>25.1</td></tr>
+                                <tr><td>8.5</td><td>7.5</td><td>41.5</td><td>10.1</td><td>25.6</td></tr>
+                                <tr><td>9</td><td>8</td><td>42</td><td>10.3</td><td>26.1</td></tr>
+                                <tr><td>9.5</td><td>8.5</td><td>42.5</td><td>10.5</td><td>26.6</td></tr>
+                                <tr><td>10</td><td>9</td><td>43</td><td>10.7</td><td>27.1</td></tr>
+                                <tr><td>10.5</td><td>9.5</td><td>43.5</td><td>10.9</td><td>27.6</td></tr>
+                                <tr><td>11</td><td>10</td><td>44</td><td>11.1</td><td>28.1</td></tr>
+                                <tr><td>11.5</td><td>10.5</td><td>44.5</td><td>11.3</td><td>28.6</td></tr>
+                                <tr><td>12</td><td>11</td><td>45</td><td>11.5</td><td>29.1</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Women's Size Chart -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-female me-2"></i>Women's Size Chart</h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>US Size</th>
+                                    <th>UK Size</th>
+                                    <th>EU Size</th>
+                                    <th>Foot Length (inches)</th>
+                                    <th>Foot Length (cm)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr><td>5</td><td>3</td><td>35</td><td>8.5</td><td>21.6</td></tr>
+                                <tr><td>5.5</td><td>3.5</td><td>35.5</td><td>8.7</td><td>22.1</td></tr>
+                                <tr><td>6</td><td>4</td><td>36</td><td>8.9</td><td>22.6</td></tr>
+                                <tr><td>6.5</td><td>4.5</td><td>36.5</td><td>9.1</td><td>23.1</td></tr>
+                                <tr><td>7</td><td>5</td><td>37</td><td>9.3</td><td>23.6</td></tr>
+                                <tr><td>7.5</td><td>5.5</td><td>37.5</td><td>9.5</td><td>24.1</td></tr>
+                                <tr><td>8</td><td>6</td><td>38</td><td>9.7</td><td>24.6</td></tr>
+                                <tr><td>8.5</td><td>6.5</td><td>38.5</td><td>9.9</td><td>25.1</td></tr>
+                                <tr><td>9</td><td>7</td><td>39</td><td>10.1</td><td>25.6</td></tr>
+                                <tr><td>9.5</td><td>7.5</td><td>39.5</td><td>10.3</td><td>26.1</td></tr>
+                                <tr><td>10</td><td>8</td><td>40</td><td>10.5</td><td>26.6</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Fitting Tips -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-lightbulb me-2"></i>Fitting Tips</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-primary">For Athletic Shoes</h6>
+                            <ul>
+                                <li>Leave 1/2 inch space at the toe</li>
+                                <li>Ensure heel fits snugly</li>
+                                <li>Check arch support</li>
+                                <li>Test flexibility</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-primary">For Formal Shoes</h6>
+                            <ul>
+                                <li>Should fit snug but not tight</li>
+                                <li>No heel slippage</li>
+                                <li>Comfortable toe room</li>
+                                <li>Proper arch alignment</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-primary">For Casual Shoes</h6>
+                            <ul>
+                                <li>Comfortable fit all around</li>
+                                <li>Easy to slip on/off</li>
+                                <li>Good breathability</li>
+                                <li>Flexible sole</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-primary">Width Guide</h6>
+                            <ul>
+                                <li><strong>Narrow:</strong> A, B, C</li>
+                                <li><strong>Medium:</strong> D, E</li>
+                                <li><strong>Wide:</strong> EE, EEE</li>
+                                <li><strong>Extra Wide:</strong> EEEE</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Common Issues -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i>Common Fitting Issues</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-warning">Too Small</h6>
+                            <ul>
+                                <li>Toes feel cramped</li>
+                                <li>Heel slippage</li>
+                                <li>Pain in ball of foot</li>
+                                <li>Numbness in toes</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-warning">Too Large</h6>
+                            <ul>
+                                <li>Excessive heel slippage</li>
+                                <li>Foot slides forward</li>
+                                <li>Poor arch support</li>
+                                <li>Unstable walking</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contact Support -->
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5 class="mb-3">Still Unsure About Your Size?</h5>
+                    <p class="text-muted mb-3">Our customer service team is here to help you find the perfect fit.</p>
+                    <a href="{% url 'store:contact_support' %}" class="btn btn-primary me-2">
+                        <i class="fas fa-headset me-2"></i>Contact Support
+                    </a>
+                    <a href="{% url 'store:product_list' %}" class="btn btn-outline-primary">
+                        <i class="fas fa-shopping-bag me-2"></i>Browse Products
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

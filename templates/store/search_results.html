@@ -1,0 +1,163 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Search Results - ShoeStore{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <!-- Search Filters Sidebar -->
+        <div class="col-lg-3 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Filters</h5>
+                </div>
+                <div class="card-body">
+                    <form method="get" action="{% url 'store:search' %}">
+                        <input type="hidden" name="q" value="{{ query }}">
+                        
+                        <!-- Gender Filter -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Gender</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gender" value="" id="all-gender" {% if not current_gender %}checked{% endif %}>
+                                <label class="form-check-label" for="all-gender">All</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gender" value="M" id="men-gender" {% if current_gender == 'M' %}checked{% endif %}>
+                                <label class="form-check-label" for="men-gender">Men</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="gender" value="W" id="women-gender" {% if current_gender == 'W' %}checked{% endif %}>
+                                <label class="form-check-label" for="women-gender">Women</label>
+                            </div>
+                        </div>
+
+                        <!-- Price Range Filter -->
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Price Range</label>
+                            <div class="row">
+                                <div class="col-6">
+                                    <input type="number" class="form-control" name="min_price" placeholder="Min" value="{{ request.GET.min_price }}">
+                                </div>
+                                <div class="col-6">
+                                    <input type="number" class="form-control" name="max_price" placeholder="Max" value="{{ request.GET.max_price }}">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">
+                            <i class="fas fa-search me-2"></i>Apply Filters
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Search Results -->
+        <div class="col-lg-9">
+            <!-- Search Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h2 class="mb-1">
+                        {% if query %}
+                            Search Results for "{{ query }}"
+                        {% else %}
+                            All Products
+                        {% endif %}
+                    </h2>
+                    <p class="text-muted mb-0">
+                        {% if products %}
+                            {{ products.paginator.count }} product{{ products.paginator.count|pluralize }} found
+                        {% else %}
+                            No products found
+                        {% endif %}
+                    </p>
+                </div>
+                
+                <!-- Search Form -->
+                <div class="d-flex">
+                    <form method="get" action="{% url 'store:search' %}" class="d-flex">
+                        <input type="text" class="form-control me-2" name="q" placeholder="Search products..." value="{{ query }}">
+                        <button type="submit" class="btn btn-outline-primary">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            {% if products %}
+                <!-- Products Grid -->
+                <div class="row">
+                    {% for product in products %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card h-100 product-card">
+                            <div class="product-image-container">
+                                <img src="{{ product.get_static_image_path }}" class="card-img-top" alt="{{ product.name }}" onerror="this.src='{% static 'images/placeholder.svg' %}'">
+                                <div class="product-overlay">
+                                    <a href="{% url 'store:product_detail' product.slug %}" class="btn btn-primary btn-sm">
+                                        <i class="fas fa-eye me-1"></i>View Details
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body d-flex flex-column">
+                                <h6 class="card-title">{{ product.name }}</h6>
+                                <p class="card-text text-muted small">{{ product.category.name }}</p>
+                                <div class="mt-auto">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <span class="fw-bold text-primary">${{ product.price }}</span>
+                                        <span class="badge bg-secondary">{{ product.get_gender_display }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if products.has_other_pages %}
+                <nav aria-label="Search results pagination">
+                    <ul class="pagination justify-content-center">
+                        {% if products.has_previous %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ products.previous_page_number }}">Previous</a>
+                            </li>
+                        {% endif %}
+
+                        {% for num in products.paginator.page_range %}
+                            {% if products.number == num %}
+                                <li class="page-item active">
+                                    <span class="page-link">{{ num }}</span>
+                                </li>
+                            {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ num }}">{{ num }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if products.has_next %}
+                            <li class="page-item">
+                                <a class="page-link" href="?{% for key, value in request.GET.items %}{% if key != 'page' %}{{ key }}={{ value }}&{% endif %}{% endfor %}page={{ products.next_page_number }}">Next</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+                {% endif %}
+
+            {% else %}
+                <!-- No Results -->
+                <div class="text-center py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">No products found</h4>
+                    <p class="text-muted">Try adjusting your search terms or filters.</p>
+                    <a href="{% url 'store:product_list' %}" class="btn btn-primary">
+                        <i class="fas fa-shopping-bag me-2"></i>Browse All Products
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %} 

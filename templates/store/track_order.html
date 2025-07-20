@@ -1,0 +1,248 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Track Order - ShoeStore{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Page Header -->
+            <div class="text-center mb-5">
+                <h1 class="fw-bold mb-3"><i class="fas fa-search me-3"></i>Track Your Order</h1>
+                <p class="text-muted">Enter your order number to track your shipment</p>
+            </div>
+
+            <!-- Order Tracking Form -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-truck me-2"></i>Track Order</h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="get" class="mb-4">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <label for="order_number" class="form-label">Order Number *</label>
+                                <input type="text" class="form-control" id="order_number" name="order_number" 
+                                       value="{{ order_number }}" placeholder="Enter your order number (e.g., ORD-2024-001)" required>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="submit" class="btn btn-primary w-100">
+                                    <i class="fas fa-search me-2"></i>Track Order
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                    {% if order %}
+                        <!-- Order Details -->
+                        <div class="border rounded p-4 bg-light">
+                            <h5 class="fw-bold mb-3">Order Details</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <p class="mb-1"><strong>Order Number:</strong></p>
+                                    <p class="text-primary">{{ order.order_number }}</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <p class="mb-1"><strong>Order Date:</strong></p>
+                                    <p>{{ order.created_at|date:"F d, Y" }}</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <p class="mb-1"><strong>Total Amount:</strong></p>
+                                    <p class="fw-bold text-success">₹{{ order.total_amount }}</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <p class="mb-1"><strong>Status:</strong></p>
+                                    <span class="badge bg-success">Delivered</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tracking Timeline -->
+                        <div class="mt-4">
+                            <h5 class="fw-bold mb-3">Tracking Timeline</h5>
+                            <div class="timeline">
+                                <div class="timeline-item completed">
+                                    <div class="timeline-marker bg-success">
+                                        <i class="fas fa-check text-white"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <h6 class="fw-bold">Order Placed</h6>
+                                        <p class="text-muted mb-1">{{ order.created_at|date:"F d, Y - g:i A" }}</p>
+                                        <p class="small">Your order has been successfully placed</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item completed">
+                                    <div class="timeline-marker bg-success">
+                                        <i class="fas fa-check text-white"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <h6 class="fw-bold">Order Confirmed</h6>
+                                        <p class="text-muted mb-1">{{ order.created_at|date:"F d, Y - g:i A" }}</p>
+                                        <p class="small">Payment received and order confirmed</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item completed">
+                                    <div class="timeline-marker bg-success">
+                                        <i class="fas fa-check text-white"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <h6 class="fw-bold">Processing</h6>
+                                        <p class="text-muted mb-1">{{ order.created_at|date:"F d, Y - g:i A" }}</p>
+                                        <p class="small">Your order is being prepared for shipment</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item completed">
+                                    <div class="timeline-marker bg-success">
+                                        <i class="fas fa-check text-white"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <h6 class="fw-bold">Shipped</h6>
+                                        <p class="text-muted mb-1">{{ order.created_at|date:"F d, Y - g:i A" }}</p>
+                                        <p class="small">Package has been shipped from our warehouse</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item completed">
+                                    <div class="timeline-marker bg-success">
+                                        <i class="fas fa-check text-white"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <h6 class="fw-bold">Out for Delivery</h6>
+                                        <p class="text-muted mb-1">{{ order.created_at|date:"F d, Y - g:i A" }}</p>
+                                        <p class="small">Package is out for delivery</p>
+                                    </div>
+                                </div>
+                                <div class="timeline-item completed">
+                                    <div class="timeline-marker bg-success">
+                                        <i class="fas fa-check text-white"></i>
+                                    </div>
+                                    <div class="timeline-content">
+                                        <h6 class="fw-bold">Delivered</h6>
+                                        <p class="text-muted mb-1">{{ order.created_at|date:"F d, Y - g:i A" }}</p>
+                                        <p class="small">Package has been successfully delivered</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Delivery Information -->
+                        <div class="mt-4">
+                            <h5 class="fw-bold mb-3">Delivery Information</h5>
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <h6 class="fw-bold">Shipping Address</h6>
+                                    <p class="mb-1">{{ order.shipping_address.name }}</p>
+                                    <p class="mb-1">{{ order.shipping_address.address }}</p>
+                                    <p class="mb-1">{{ order.shipping_address.city }}, {{ order.shipping_address.state }} {{ order.shipping_address.zip_code }}</p>
+                                    <p class="mb-1">Phone: {{ order.shipping_address.phone }}</p>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <h6 class="fw-bold">Shipping Method</h6>
+                                    <p class="mb-1">Standard Delivery</p>
+                                    <p class="text-muted small">Estimated delivery: 3-5 business days</p>
+                                </div>
+                            </div>
+                        </div>
+                    {% elif order_number %}
+                        <!-- No Order Found -->
+                        <div class="alert alert-warning" role="alert">
+                            <i class="fas fa-exclamation-triangle me-2"></i>
+                            <strong>Order Not Found</strong><br>
+                            We couldn't find an order with the number "{{ order_number }}". Please check your order number and try again.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Help Section -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-question-circle me-2"></i>Need Help?</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold">Can't find your order?</h6>
+                            <ul class="list-unstyled">
+                                <li><i class="fas fa-check text-success me-2"></i>Check your email for order confirmation</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Verify the order number format</li>
+                                <li><i class="fas fa-check text-success me-2"></i>Contact our support team</li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold">Order number format</h6>
+                            <p class="text-muted">Order numbers typically follow this format:</p>
+                            <p class="text-primary fw-bold">ORD-YYYY-XXX</p>
+                            <p class="text-muted small">Example: ORD-2024-001</p>
+                        </div>
+                    </div>
+                    <div class="text-center mt-3">
+                        <a href="{% url 'store:contact_support' %}" class="btn btn-outline-primary me-2">
+                            <i class="fas fa-headset me-2"></i>Contact Support
+                        </a>
+                        <a href="{% url 'store:shipping_info' %}" class="btn btn-outline-info">
+                            <i class="fas fa-shipping-fast me-2"></i>Shipping Info
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -45px;
+    top: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.timeline-item:not(:last-child)::after {
+    content: '';
+    position: absolute;
+    left: -30px;
+    top: 30px;
+    width: 2px;
+    height: calc(100% + 30px);
+    background-color: #dee2e6;
+    z-index: 1;
+}
+
+.timeline-item.completed::after {
+    background-color: #198754;
+}
+
+.timeline-content {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+}
+</style>
+{% endblock %} 

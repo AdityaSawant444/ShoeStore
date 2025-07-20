@@ -1,0 +1,157 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}Contact Support - ShoeStore{% endblock %}
+
+{% block content %}
+<div class="container mt-5 pt-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <!-- Page Header -->
+            <div class="text-center mb-5">
+                <h1 class="fw-bold mb-3"><i class="fas fa-headset me-3"></i>Contact Support</h1>
+                <p class="text-muted">We're here to help! Get in touch with our customer support team.</p>
+            </div>
+
+            <!-- Contact Form -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-envelope me-2"></i>Send us a Message</h4>
+                </div>
+                <div class="card-body">
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                    
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="name" class="form-label">Full Name *</label>
+                                <input type="text" class="form-control" id="name" name="name" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email Address *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="subject" class="form-label">Subject *</label>
+                            <select class="form-select" id="subject" name="subject" required>
+                                <option value="">Choose a topic</option>
+                                <option value="Order Inquiry">Order Inquiry</option>
+                                <option value="Product Information">Product Information</option>
+                                <option value="Shipping & Delivery">Shipping & Delivery</option>
+                                <option value="Returns & Exchanges">Returns & Exchanges</option>
+                                <option value="Size & Fitting">Size & Fitting</option>
+                                <option value="Technical Support">Technical Support</option>
+                                <option value="General Inquiry">General Inquiry</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Message *</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" required placeholder="Please describe your issue or question in detail..."></textarea>
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Contact Information -->
+            <div class="row">
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-phone me-2"></i>Phone Support</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-2"><strong>Customer Service:</strong></p>
+                            <p class="text-primary mb-3">+91 1800-123-4567</p>
+                            <p class="mb-2"><strong>Technical Support:</strong></p>
+                            <p class="text-primary mb-3">+91 1800-987-6543</p>
+                            <p class="text-muted small">Available: Monday - Saturday, 9:00 AM - 8:00 PM IST</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100">
+                        <div class="card-header">
+                            <h5 class="mb-0"><i class="fas fa-envelope me-2"></i>Email Support</h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-2"><strong>General Inquiries:</strong></p>
+                            <p class="text-primary mb-3">support@shoestore.in</p>
+                            <p class="mb-2"><strong>Order Support:</strong></p>
+                            <p class="text-primary mb-3">orders@shoestore.in</p>
+                            <p class="text-muted small">Response time: Within 24 hours</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Office Locations -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Our Offices</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-primary">Mumbai Office</h6>
+                            <p class="mb-1">ShoeStore India Pvt. Ltd.</p>
+                            <p class="mb-1">Bandra Kurla Complex</p>
+                            <p class="mb-1">Mumbai, Maharashtra 400051</p>
+                            <p class="text-muted small">Main Corporate Office</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold text-primary">Pune Office</h6>
+                            <p class="mb-1">ShoeStore India Pvt. Ltd.</p>
+                            <p class="mb-1">Hinjewadi Phase 1</p>
+                            <p class="mb-1">Pune, Maharashtra 411057</p>
+                            <p class="text-muted small">Technology Center</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Quick Links -->
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="mb-0"><i class="fas fa-question-circle me-2"></i>Frequently Asked Questions</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold">Order & Shipping</h6>
+                            <ul class="list-unstyled">
+                                <li><a href="{% url 'store:shipping_info' %}" class="text-decoration-none">How long does shipping take?</a></li>
+                                <li><a href="{% url 'store:shipping_info' %}" class="text-decoration-none">What are the shipping costs?</a></li>
+                                <li><a href="{% url 'store:track_order' %}" class="text-decoration-none">How do I track my order?</a></li>
+                                <li><a href="#" class="text-decoration-none">Can I change my order?</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="fw-bold">Returns & Exchanges</h6>
+                            <ul class="list-unstyled">
+                                <li><a href="#" class="text-decoration-none">What is your return policy?</a></li>
+                                <li><a href="#" class="text-decoration-none">How do I return an item?</a></li>
+                                <li><a href="{% url 'store:size_guide' %}" class="text-decoration-none">How do I find my size?</a></li>
+                                <li><a href="#" class="text-decoration-none">Can I exchange for a different size?</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="ShoeStore - Premium Footwear for Men & Women. Discover quality shoes for every occasion.">
+    <meta name="keywords" content="shoes, footwear, men shoes, women shoes, athletic shoes, formal shoes, casual shoes">
+    <meta name="author" content="ShoeStore">
+    <meta name="theme-color" content="#667eea">
+    
+    <title>{% block title %}ShoeStore - Premium Footwear{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    
+    <!-- Preload critical resources -->
+    <link rel="preload" href="{% static 'images/premium.jpg.jpg' %}" as="image">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'store:home' %}">
+                <i class="fas fa-shoe-prints me-2"></i>ShoeStore
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'store:home' %}">
+                            <i class="fas fa-home d-lg-none me-2"></i>Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'store:men_shoes' %}">
+                            <i class="fas fa-male d-lg-none me-2"></i>Men
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'store:women_shoes' %}">
+                            <i class="fas fa-female d-lg-none me-2"></i>Women
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'store:product_list' %}">
+                            <i class="fas fa-th-large d-lg-none me-2"></i>All Products
+                        </a>
+                    </li>
+                </ul>
+                
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'store:search' %}" aria-label="Search">
+                            <i class="fas fa-search"></i>
+                            <span class="d-lg-none ms-2">Search</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'store:cart' %}" aria-label="Shopping Cart">
+                            <i class="fas fa-shopping-cart"></i>
+                            {% if cart_count > 0 %}
+                            <span class="badge bg-danger ms-1">{{ cart_count }}</span>
+                            {% endif %}
+                            <span class="d-lg-none ms-2">Cart</span>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'store:profile' %}" aria-label="Profile">
+                            <i class="fas fa-user"></i>
+                            <span class="d-lg-none ms-2">Profile</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-5 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h5 class="fw-bold mb-3 text-white">ShoeStore</h5>
+                    <p class="text-white">Premium footwear for every occasion. Quality, comfort, and style in every step.</p>
+                    <div class="social-links">
+                        <a href="https://facebook.com/shoestore" target="_blank" class="text-light me-3" aria-label="Facebook">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="https://instagram.com/shoestore" target="_blank" class="text-light me-3" aria-label="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="https://youtube.com/@shoestore" target="_blank" class="text-light" aria-label="YouTube">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-3 col-6 mb-4">
+                    <h6 class="fw-bold mb-3 text-white">Shop</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'store:men_shoes' %}" class="text-white text-decoration-none">Men's Shoes</a></li>
+                        <li class="mb-2"><a href="{% url 'store:women_shoes' %}" class="text-white text-decoration-none">Women's Shoes</a></li>
+                        <li class="mb-2"><a href="{% url 'store:product_list' %}" class="text-white text-decoration-none">All Products</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-3 col-6 mb-4">
+                    <h6 class="fw-bold mb-3 text-white">Support</h6>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="{% url 'store:contact_support' %}" class="text-white text-decoration-none">Contact Us</a></li>
+                        <li class="mb-2"><a href="{% url 'store:shipping_info' %}" class="text-white text-decoration-none">Shipping Info</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Returns</a></li>
+                        <li class="mb-2"><a href="{% url 'store:size_guide' %}" class="text-white text-decoration-none">Size Guide</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-4 col-md-6 mb-4">
+                    <h6 class="fw-bold mb-3 text-white">Newsletter</h6>
+                    <p class="text-white">Subscribe for updates and exclusive offers.</p>
+                    <div class="input-group">
+                        <input type="email" class="form-control" placeholder="Your email" aria-label="Email for newsletter">
+                        <button class="btn btn-primary" type="button" aria-label="Subscribe to newsletter">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="row align-items-center">
+                <div class="col-12 text-center">
+                    <p class="text-white mb-0">&copy; 2024 ShoeStore. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    {% load static %}
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+    
+    <!-- Mobile-specific enhancements -->
+    <script>
+        // Prevent zoom on double tap for mobile
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) {
+                event.preventDefault();
+            }
+            lastTouchEnd = now;
+        }, false);
+        
+        // Add active class to current nav item
+        document.addEventListener('DOMContentLoaded', function() {
+            const currentPath = window.location.pathname;
+            const navLinks = document.querySelectorAll('.navbar-nav .nav-link');
+            
+            navLinks.forEach(link => {
+                if (link.getAttribute('href') === currentPath) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,184 @@
+{% extends 'store/base.html' %}
+{% load static %}
+
+{% block title %}{{ gender }}'s Shoes - ShoeStore{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12">
+            <div class="card" style="background: linear-gradient(135deg, {% if gender == 'Men' %}#667eea 0%, #764ba2 100%{% else %}#f093fb 0%,#f5576c 100%{% endif %}); color: white;">
+                <div class="card-body text-center p-5">
+                    <i class="fas fa-{% if gender == 'Men' %}male{% else %}female{% endif %} fa-3x mb-3"></i>
+                    <h1 class="display-4 fw-bold">{{ gender }}'s Collection</h1>
+                    <p class="lead">Discover our premium collection of {{ gender|lower }}'s footwear. From athletic shoes to formal wear, we have everything you need.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="filter-section">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h5 class="mb-0">Filter Products</h5>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex gap-2 justify-content-md-end">
+                            <button class="btn btn-outline-primary filter-btn active" data-filter="all">All</button>
+                            <button class="btn btn-outline-primary filter-btn" data-filter="athletic">Athletic</button>
+                            <button class="btn btn-outline-primary filter-btn" data-filter="formal">Formal</button>
+                            <button class="btn btn-outline-primary filter-btn" data-filter="casual">Casual</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Price Range Filter -->
+            <div class="filter-section mt-3">
+                <h5>Price Range</h5>
+                <form method="get" class="mb-3">
+                    <input type="hidden" name="gender" value="{% if gender == 'Men' %}M{% else %}W{% endif %}">
+                    <div class="mb-2">
+                        <label for="min_price" class="form-label">Min Price (₹)</label>
+                        <input type="number" class="form-control" id="min_price" name="min_price" min="0" step="1" value="{{ request.GET.min_price|default:1000 }}">
+                    </div>
+                    <div class="mb-2">
+                        <label for="max_price" class="form-label">Max Price (₹)</label>
+                        <input type="number" class="form-control" id="max_price" name="max_price" min="0" step="1" value="{{ request.GET.max_price|default:4000 }}">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Apply</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Products Grid -->
+    {% if products %}
+    <div class="row g-4" id="products-grid">
+        {% for product in products %}
+        <div class="col-lg-3 col-md-6">
+            <div class="product-card card h-100" data-category="{{ product.category.slug }}" data-gender="{{ product.gender }}">
+                {% if product.is_on_sale %}
+                <div class="sale-badge">SALE</div>
+                {% endif %}
+                {% if product.featured %}
+                <div class="featured-badge">FEATURED</div>
+                {% endif %}
+                
+                <img src="{{ product.static_image_url }}" class="card-img-top" alt="{{ product.name }}">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title">{{ product.name }}</h5>
+                    <p class="card-text">{{ product.description|truncatewords:10 }}</p>
+                    
+                    <!-- Category Images Carousel -->
+                    <div class="category-images-carousel mb-3">
+                        <div class="row g-1">
+                            {% for image_url in product.category_images|slice:":4" %}
+                            <div class="col-3">
+                                <img src="{{ image_url }}" class="img-fluid rounded" alt="{{ product.name }} - {{ forloop.counter }}" style="height: 60px; object-fit: cover;">
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    
+                    <div class="product-price mt-auto">
+                        {% if product.is_on_sale %}
+                        <span class="original-price">₹{{ product.price }}</span>
+                        <span class="sale-price">₹{{ product.sale_price }}</span>
+                        {% else %}
+                        ₹{{ product.price }}
+                        {% endif %}
+                    </div>
+                    <div class="d-flex gap-2 mt-3">
+                        <a href="{{ product.get_absolute_url }}" class="btn btn-primary flex-fill">View Details</a>
+                        <button class="btn btn-outline-primary wishlist-btn" data-bs-toggle="tooltip" title="Add to Wishlist">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if products.has_other_pages %}
+    <nav aria-label="Product pagination" class="mt-5">
+        <ul class="pagination justify-content-center">
+            {% if products.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ products.previous_page_number }}">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            </li>
+            {% endif %}
+
+            {% for num in products.paginator.page_range %}
+                {% if products.number == num %}
+                <li class="page-item active">
+                    <span class="page-link">{{ num }}</span>
+                </li>
+                {% elif num > products.number|add:'-3' and num < products.number|add:'3' %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ num }}">{{ num }}</a>
+                </li>
+                {% endif %}
+            {% endfor %}
+
+            {% if products.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?page={{ products.next_page_number }}">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+
+    {% else %}
+    <div class="text-center py-5">
+        <i class="fas fa-search fa-3x text-muted mb-3"></i>
+        <h3>No {{ gender|lower }}'s products found</h3>
+        <p class="text-muted">We're working on adding more {{ gender|lower }}'s products to our collection.</p>
+        <a href="{% url 'store:product_list' %}" class="btn btn-primary">View All Products</a>
+    </div>
+    {% endif %}
+
+    <!-- Category Highlights -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="text-center mb-4">Shop by Category</h3>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="category-card">
+                        <i class="fas fa-running"></i>
+                        <h5>Athletic Shoes</h5>
+                        <p class="text-muted">Performance footwear for sports and fitness activities.</p>
+                        <a href="{% url 'store:product_list' %}?category=athletic&gender={% if gender == 'Men' %}M{% else %}W{% endif %}" class="btn btn-outline-primary">Shop Now</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="category-card">
+                        <i class="fas fa-briefcase"></i>
+                        <h5>Formal Shoes</h5>
+                        <p class="text-muted">Elegant footwear for professional and formal occasions.</p>
+                        <a href="{% url 'store:product_list' %}?category=formal&gender={% if gender == 'Men' %}M{% else %}W{% endif %}" class="btn btn-outline-primary">Shop Now</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="category-card">
+                        <i class="fas fa-walking"></i>
+                        <h5>Casual Shoes</h5>
+                        <p class="text-muted">Comfortable and stylish everyday footwear.</p>
+                        <a href="{% url 'store:product_list' %}?category=casual&gender={% if gender == 'Men' %}M{% else %}W{% endif %}" class="btn btn-outline-primary">Shop Now</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
