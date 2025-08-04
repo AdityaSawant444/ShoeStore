@@ -21,7 +21,7 @@ urlpatterns = [
     path('search/', views.search_products, name='search'),
     path('profile/', views.profile, name='profile'),
     path('profile/edit/', views.profile_edit, name='profile_edit'),
-    path('profile/settings/', views.profile_settings, name='profile_settings'),
+ 
     path('size-guide/', views.size_guide, name='size_guide'),
     path('shipping-info/', views.shipping_info, name='shipping_info'),
     path('contact-support/', views.contact_support, name='contact_support'),

@@ -502,7 +502,7 @@ def profile(request):
     
     # Get actual orders from database (for demo, we'll get all orders)
     # In a real app, you'd filter by user ID
-    orders = Order.objects.all().order_by('-created_at')[:10]  # Get last 10 orders
+    orders = Order.objects.all().order_by('-created')[:10]  # Get last 10 orders
     
     context = {
         'user_name': user_data['user_name'],
@@ -512,39 +512,7 @@ def profile(request):
     }
     return render(request, 'store/profile.html', context)
 
-def profile_settings(request):
-    """Profile settings page"""
-    # Get current user data from session
-    user_data = request.session.get('user_data', {
-        'user_name': 'Guest User',
-        'email': 'guest@example.com',
-        'phone': '+1 (555) 123-4567',
-        'address': '123 Main Street, City, State 12345',
-    })
-    
-    if request.method == 'POST':
-        # Update user data from form
-        user_data.update({
-            'user_name': request.POST.get('user_name', 'Guest User'),
-            'email': request.POST.get('email', 'guest@example.com'),
-            'phone': request.POST.get('phone', ''),
-            'address': request.POST.get('address', ''),
-        })
-        
-        # Save to session
-        request.session['user_data'] = user_data
-        request.session.modified = True
-        
-        messages.success(request, 'Profile settings updated successfully!')
-        return redirect('store:profile')
-    
-    context = {
-        'user_name': user_data['user_name'],
-        'email': user_data['email'],
-        'phone': user_data['phone'],
-        'address': user_data['address'],
-    }
-    return render(request, 'store/profile_settings.html', context)
+
 
 def profile_edit(request):
     """Edit profile page"""
